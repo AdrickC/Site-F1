@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib.auth.decorators import user_passes_test
 from general.models import League, Game
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 from users.models import License
 
@@ -73,15 +75,16 @@ def update_claim_response(request, claim_id):
 
     if request.method == 'POST':
         admin_response = request.POST.get('admin_response', '').strip()
-        is_resolved = request.POST.get('is_resolved') == '1'
 
         if admin_response:
             claim.admin_response = admin_response
-            claim.is_resolved = is_resolved
-            claim.save()
-            messages.success(request, "Votre saisie a été mise à jour avec succès.")
+            claim.is_resolved = True
         else:
-            messages.error(request, "Veuillez remplir les champs demandés.")
+            claim.admin_response = admin_response
+            claim.is_resolved = False
+        claim.save()
+
+        messages.success(request, "Votre saisie a été mise à jour avec succès.")
 
     return redirect('claim-detail', claim_id=claim_id)
 
@@ -109,6 +112,17 @@ def claim_list(request):
     leagues = League.objects.all()
     seasons = Season.objects.all()
 
+    claims_per_page = 10 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(claims, claims_per_page)
+    try:
+        claims = paginator.page(page)
+    except PageNotAnInteger:
+        claims = paginator.page(1)
+    except EmptyPage:
+        claims = paginator.page(paginator.num_pages)
+        
     context = {
         'claims': claims,
         'leagues': leagues,

@@ -35,7 +35,7 @@
         <table class="table table-dark table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">#</th>
                     <th scope="col">Ligue</th>
                     <th scope="col">Pilote</th>
                     <th scope="col">Participant réclamé</th>
@@ -71,6 +71,42 @@
             </tbody>
         </table>
     </div>
+    <div class="d-flex justify-content-center my-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                {% if claims.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if league_id %}league={{ league_id }}&{% endif %}{% if season_id %}season={{ season_id }}&{% endif %}page=1" aria-label="Première">
+                            <span aria-hidden="true">&laquo;&laquo;</span></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if league_id %}league={{ league_id }}&{% endif %}{% if season_id %}season={{ season_id }}&{% endif %}page={{ claims.previous_page_number }}" aria-label="Précédente">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for i in claims.paginator.page_range %}
+                    {% if claims.number == i %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                            {% else %}
+                        <li class="page-item"><a class="page-link" href="?{% if league_id %}league={{ league_id }}&{% endif %}{% if season_id %}season={{ season_id }}&{% endif %}page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if claims.has_next %}
+                        <li class="page-item">
+                        <a class="page-link" href="?{% if league_id %}league={{ league_id }}&{% endif %}{% if season_id %}season={{ season_id }}&{% endif %}page={{ claims.next_page_number }}" aria-label="Suivante">
+                            <spanaria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if league_id %}league={{ league_id }}&{% endif %}{% if season_id %}season={{ season_id }}&{% endif %}page={{ claims.paginator.num_pages }}" aria-label="Dernière">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>                    
 </div>
 
 

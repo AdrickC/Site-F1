@@ -2,64 +2,63 @@
 {% block content %}
 
 <div class="container">
-    <h1 class="mb-4">Détails de la réclamation</h1>
-    <div class="card bg-dark text-light mb-4 p-4">
-        <h2 class="mb-2">Incident :</h2>
-        <p>{{ claim.incident_description }}</p>
-        <h2 class="mb-2">Type de session :</h2>
-        <p>{{ claim.session_type }}</p>
-        <h2 class="mb-2">Tour de l'incident :</h2>
-        <p>{{ claim.lap_number }}</p>
-        <h2 class="mb-2">URL de la vidéo :</h2>
-        <p>{{ claim.video_url }}</p>
-        <h2 class="mb-2">Timecode de l'incident :</h2>
-        <p>{{ claim.video_timestamp }}</p>
-    </div>
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light">
+                <div class="card-header">
+                    <h1 class="text-center mb-0">Détails de la réclamation</h1>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Incident :</h3> {{ claim.incident_description }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Type de session :</h3> {{ claim.session_type }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Tour de l'incident :</h3> {{ claim.lap_number }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>URL de la vidéo :</h3> {{ claim.video_url }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Timecode de l'incident :</h3> {{ claim.video_timestamp }}</li>
+                    </ul>
 
-    <div class="card bg-dark text-light p-4">
-        <h2 class="mb-2" style="color: #ff7e00;">Décision de la FIA :</h2>
-        {% if claim.is_resolved %}
-            <p class="mb-0">{{ claim.admin_response }}</p>
-        {% else %}
-            <p class="mb-0">La réclamation est en cours de traitement.</p>
-        {% endif %}
-        {% if request.user.is_staff or request.user.is_superuser %}
-            <button type="button" class="btn btn-custom" style="width: 120px;" data-toggle="modal" data-target="#responseModal">
-                Modifier
-            </button>
-        {% endif %}
-    </div>
+                    <h2 class="mb-2" style="color: #ff7e00;">Décision de la FIA :</h2>
+                    {% if claim.is_resolved %}
+                        <p class="mb-0">{{ claim.admin_response }}</p>
+                    {% else %}
+                        <p class="mb-0">La réclamation est en cours de traitement.</p>
+                    {% endif %}
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <div class="mt-2" style="text-align: center;">
+                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#responseModal">
+                                Modifier
+                            </button>
+                        </div>
+                    {% endif %}
 
-    {% if request.user.is_staff or request.user.is_superuser %}
-        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content bg-dark text-white">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="responseModalLabel">Décision de la FIA</h5>
-                    </div>
-                    <form method="post" action="{% url 'update-claim-response' claim.id %}">
-                        {% csrf_token %}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="admin_response">Réponse à donner à la réclamation :</label>
-                                <textarea class="form-control" name="admin_response" id="admin_response" rows="3">{{ claim.admin_response }}</textarea>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="1" name="is_resolved" id="is_resolved" {% if claim.is_resolved %}checked{% endif %}>
-                                <label class="form-check-label" for="is_resolved">
-                                    Réclamation traitée
-                                </label>
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content bg-dark text-white">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="responseModalLabel">Décision de la FIA</h5>
+                                    </div>
+                                    <form method="post" action="{% url 'update-claim-response' claim.id %}">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="admin_response">Réponse à donner à la réclamation :</label>
+                                                <textarea class="form-control" name="admin_response" id="admin_response" rows="3">{{ claim.admin_response }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="btn btn-custom">Valider</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                            <button type="submit" class="btn btn-custom">Valider</button>
-                        </div>
-                    </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
 </div>
 
 {% endblock content %}

@@ -23,6 +23,7 @@ class ClaimForm(forms.ModelForm):
 
 
 
+
 class EventResultForm(forms.ModelForm):
     class Meta:
         model = EventResult
