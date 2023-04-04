@@ -30,7 +30,7 @@ def register(request):
         form = UserRegisterForm()
     
     context = {
-        'title': 'Inscriptions', 
+        'title': 'Inscription', 
         'form': form
         }
 
