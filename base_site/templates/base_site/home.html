@@ -1,0 +1,51 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5 text-light">Bienvenue sur le site de F1CS !</h1>
+
+    <div class="jumbotron" style="background-color: #1f1f1f; color: #ffffff; border-radius: 6px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" class="mb-5">
+        <h2 class="text-center">Rejoignez la ligue francophone de simracing</h2>
+        <p class="text-center">Participez à des compétitions de course automobile en ligne sur F1 22 et mesurez-vous à des pilotes de tous niveaux.</p>
+        <div class="text-center mt-4">
+            <a href="{% url 'championship-registration' %}" class="btn btn-custom btn-lg">Inscrivez-vous maintenant</a>
+        </div>
+    </div>
+
+
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <a href="#"><img src="{% static 'base_site/img/Formula 1.png' %}" class="img-fluid rounded shadow-sm" alt="Image jeu"></a>
+        </div>
+        <div class="col-lg-6">
+            <h3 class="text-light">Des ligues pour tous les niveaux</h3>
+            <p class="text-light">Que vous soyez débutant ou pilote expérimenté, nos ligues sont ouvertes à tous. Trouvez la ligue qui correspond à votre niveau et progressez à votre rythme.</p>
+            <a href="#" class="btn btn-custom">Découvrez nos ligues</a>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6 order-lg-2">
+            <a href="#"><img src="{% static 'base_site/img/Formula 1.png' %}" class="img-fluid rounded shadow-sm" alt="Image communauté"></a>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <h3 class="text-light">Une communauté passionnée et conviviale</h3>
+            <p class="text-light">Depuis 2006, nous réunissons des centaines de passionnés de simracing qui partagent leur amour de la course et échangent conseils et astuces.</p>
+            <a href="#" class="btn btn-custom">Rejoignez notre communauté</a>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-lg-6">
+            <a href="#"><img src="{% static 'base_site/img/Formula 1.png' %}" class="img-fluid rounded shadow-sm" alt="Image courses hebdomadaires"></a>
+        </div>
+        <div class="col-lg-6">
+            <h3 class="text-light">Courses hebdomadaires et compétitions régulières</h3>
+            <p class="text-light">Participez à des courses hebdomadaires et mettez vos compétences à l'épreuve dans des compétitions régulières pour remporter des trophées et gagner en notoriété.</p>
+            <a href="{% url 'calendar' %}" class="btn btn-custom">Consultez notre calendrier</a>
+            </div>
+        </div>
+
+
+{% endblock content %}

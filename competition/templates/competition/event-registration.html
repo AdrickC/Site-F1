@@ -1,0 +1,57 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8">
+            <div class="card bg-dark text-light">
+                <div class="card-header">
+                    <h1 class="text-center mb-0">Topic de présence</h1>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b>Jeu</b>: {{ event.game }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b>Type d'événement</b>: Championnat</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b>Ligue</b>: {{ event.league }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b>Circuit</b>: {{ event.circuit }} (Version {{event.circuit.version}}) </li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b>Date de l'évenement</b>: {{ event.event_date }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><b style="color: red;">Date de limite d'inscription</b>: {{ event.limit_date }}</li>
+                    </ul>
+                    {% if belongs_to_league %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <div style="text-align: center;">
+                                <button type="submit" class="btn btn-primary">Envoyer</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        {% if not belongs_to_league and event_registration.is_registered == "Remplaçant" %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-danger">Annuler ma participation</button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form|crispy }}
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

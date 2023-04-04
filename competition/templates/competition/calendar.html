@@ -1,0 +1,80 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-5">
+    <section class="py-5">
+        <h1 class="text-center mb-5">Championnat</h1>
+
+        <form method="get" class="mb-3">
+            <div class="form-row">
+                <div class="col-md-4">
+                    <label for="season" class="form-label">Saison :</label>
+                    <select name="season" id="season" class="form-select">
+                        <option value="">Toutes les saisons</option>
+                        {% for season in seasons %}
+                            <option value="{{ season.id }}" {% if selected_season and selected_season.id == season.id %}selected{% endif %}>{{ season.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="league" class="form-label">Ligue :</label>
+                    <select name="league" id="league" class="form-select">
+                        <option value="">Toutes les ligues</option>
+                        {% for league in leagues %}
+                            <option value="{{ league.id }}" {% if selected_league and selected_league.id == league.id %}selected{% endif %}>{{ league.league }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-custom">Filtrer</button>
+                </div>
+            </div>
+        </form>
+
+        {% for game, game_events in events_by_game.items %}
+            {% if game_events %}
+                <div class="game-logo text-center mb-4">
+                    {% if game.logo %}
+                        <img src="{{ game.logo.url }}" class="img-fluid" alt="img-circuit" style="background-color: white; max-width:30%;">
+                    {% else %}
+                        <h3>{{ game.name }}</h3>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    {% for event in game_events %}
+                        <div class="col-lg-4 mb-4">
+                            <div class="card card-home shadow-sm custom-card" style="border: 3px solid white">
+                                <a href="{% url 'event' event.pk %}"><img src="{{ event.circuit.image.url }}" class="card-img-top" alt="img-circuit" style="background-color: white"></a>
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{% url 'event' event.pk %}" class="circuit-name">{{ event.circuit }}</a></h5>
+                                    <h6 class="card-subtitle mb-3 text-muted"><b>{{ event.event_date | date:"l" | title }} {{ event.event_date | date }}</b></h6>
+                                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                </div>
+                                <div class="card-footer" style="background-color: {{event.league.hexcolor}}">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="font-weight-bold">{{ event.league }}</span>
+                                        {% if event.days_before_event > 0 %}
+                                            <span>{{ event.days_before_event }} jours avant l'événement</span>
+                                        {% elif event.is_event_in_progress %}
+                                            <a href="{% url 'f1cs-tv' %}"><span class="event-in-progress">Événement en cours</span></a>
+                                        {% elif event.days_before_event == 0 and not event.is_event_in_progress and not event.is_event_over %}
+                                            <span>{{ event.hours_remaining_today }}h avant l'événement</span>
+                                        {% else %}
+                                            <span>Événement terminé</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+</div>
+
+
+
+{% endblock content %}

@@ -1,0 +1,288 @@
+body {
+  margin: 0;
+  background-color: #130e0e;
+  color: #ffffff;
+  font-family: Arial !important;
+  font-size: 1.1rem;
+}
+
+.container {
+  max-width: 75%;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.navbar {
+  transition: background-color 1s ease;
+}
+
+a, p, h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+}
+
+.alert-patience {
+  background-color: #ff7e00;
+  border-color: #e06b00;
+}
+
+
+.img-homepage{
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 6px;
+  transition: transform .2s;
+}
+
+.img-homepage:hover{
+  transform: scale(1.05);
+  border-color: #ff7e00;
+}
+
+.team-logo {
+  max-width: 100px;
+  height: auto;
+}
+
+.btn-homepage{
+  transition: transform .2s;
+}
+
+.btn-homepage:hover{
+  transform: scale(1.05);
+}
+
+.circuit-name {
+  color: #ff7e00
+}
+
+.circuit-name:hover {
+  color: white
+}
+
+.card-home{
+  background-color: black;
+  transition: transform .2s;
+  border-radius: 6px;
+}
+
+.card-home:hover{
+  border: solid 2px rgb(255, 255, 255);
+  transform: scale(1.05);
+}
+
+.card-event {
+  background-color: rgb(0, 0, 0);
+}
+
+.custom-card {
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.license-card {
+  background-color: #1f1f1f;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 350px;
+}
+
+.license-card-header {
+  background-color: #292929;
+  border-bottom: 1px solid #484848;
+  border-radius: 6px 6px 0 0;
+  padding: 12px 20px;
+}
+
+.license-card-body {
+  padding: 20px;
+}
+
+.license-card.success {
+  border: 2px solid green;
+}
+
+.license-card.warning {
+  border: 2px solid orange;
+}
+
+.license-card.danger {
+  border: 2px solid red;
+}
+
+.event-in-progress {
+  font-weight: bold;
+  color: white;
+  font-size: 1.2rem;
+  background-color: #ff7e00;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.site-header{
+  padding-bottom: 2rem;
+}
+
+.navbar-collapse{
+  flex-grow: 0;
+}
+
+.navbar-dark .navbar-toggler{
+  color: white;
+  border-color: white;
+}
+
+.navbar-dark .navbar-toggler:hover{
+  color: #ff7e00;
+  border-color: #ff7e00;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header {
+  padding-bottom: 0rem;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ff7e00;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.nav-item {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dropdown-menu {
+  background-color: rgb(37, 37, 37);
+  border-radius: 6px;
+}
+
+.dropdown-item{
+  color: white;
+  font-weight: 300;
+  padding: 0.5rem 1.5rem;
+}
+
+.dropdown-item:hover{
+  background-color: black;
+  color: #ff7e00;
+}
+
+.content-section {
+  padding: 10px 20px;
+  border: 1px solid #484848;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  border: 1px solid #ffffff;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.btn-custom {
+  background-color: #ff7e00;
+  border-color: #ff7e00;
+  color: #fff;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+  background-color: #ff6200;
+  border-color: #ff6200;
+  color: #fff;
+}
+
+.btn-outline-custom {
+  background-color: transparent;
+  border-color: #ff7e00;
+  color: #ff7e00;
+}
+
+.btn-outline-custom:hover,
+.btn-outline-custom:focus,
+.btn-outline-custom:active {
+  background-color: #ff7e00;
+  border-color: #ff7e00;
+  color: #fff;
+}
+
+.text-primary {
+  color: #ff7e00 !important;
+}
+
+.form-control {
+  background-color: transparent;
+  color: white;
+}
+
+.twitch .twitch-video {
+  padding-top: 56.25%;
+  position: relative;
+  height: 0;
+}
+
+.twitch .twitch-video iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.twitch .twitch-chat {
+  height: 400px;
+}
+
+.twitch .twitch-chat iframe {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (min-width: 850px) {
+  .twitch {
+    position: relative;
+  }
+
+  .twitch .twitch-video {
+    width: 75%;
+    padding-top: 42.1875%;
+  }
+
+  .twitch .twitch-chat {
+    width: 25%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-transparent {
+    background-color: #000 !important; /* ajustez la couleur en fonction de vos besoins */
+  }
+}

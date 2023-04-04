@@ -1,0 +1,55 @@
+{% extends "base_site/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="text-center">
+                <img class="rounded-circle account-img bg-secondary" src="{{ user.profile.image.url }}" alt="Photo de profil">
+                <h2 class="account-heading mt-3">{{ user.username }}</h2>
+                <p>{{ user.first_name }} {{ user.last_name }}</p>
+                <p>{{ user.email }}</p>
+                <a href="{% url 'profile-update' %}" class="btn btn-custom">Modifier</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% if user.profile.license %}
+                {% if user.profile.license.status == 'Titulaire' %}
+                    <div class="card license-card success">
+                {% elif user.profile.license.status == 'En attente' %}
+                    <div class="card license-card warning">
+                {% else %}
+                    <div class="card license-card danger">
+                {% endif %}
+                <div class="license-card-header">
+                    <h2 class="mb-0">Licence</h2>
+                    <span>{{ user.profile.license.status }}</span>
+                </div>
+                <div class="license-card-body">
+                    <div class="row mb-4">
+                        {% for league in user.profile.license.leagues.all %}
+                            <div class="col-md-3 mb-3">
+                                <span class="badge" style="background-color: {{league.hexcolor}}; border-radius: 6px; max-width: 150px">{{ league }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <h2 class="mb-4">Équipe</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                {% if user.profile.license.team.logo %}
+                                    <img src="{{ user.profile.license.team.logo.url }}" alt="Ecusson écurie" style="background-color: transparent; border: 0px; max-width: 100px; height: auto; margin-right: 10px;">
+                                {% endif %}
+                                <span class="align-middle">{{ user.profile.license.team.team }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

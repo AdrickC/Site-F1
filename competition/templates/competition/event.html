@@ -1,0 +1,130 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="container-fluid py-5">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-6 text-center mb-4">
+            {% if event.circuit.image_details.name %}
+                <img src="{{ event.circuit.image_details.url }}" class="img-fluid shadow rounded" alt="Image détaillée du circuit">
+            {% elif event.circuit.image.name %}
+                <img src="{{ event.circuit.image.url }}" class="img-fluid shadow rounded" alt="Image du circuit">
+            {% else %}
+                <img src="" class="img-fluid shadow rounded" alt="Image du circuit">
+            {% endif %}
+        </div>
+        <div class="col-md-6 text-center">
+            <h3 class="mb-4">Informations sur l'événement</h3>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item bg-transparent border-0"><b>Jeu </b>: {{ event.game }}</li>
+                <li class="list-group-item bg-transparent border-0"><b>Type d'événement </b>: Championnat</li>
+                <li class="list-group-item bg-transparent border-0"><b>Ligue </b>: {{ event.league }}</li>
+                <li class="list-group-item bg-transparent border-0"><b>Circuit </b>: {{ event.circuit }}</li>
+                <li class="list-group-item bg-transparent border-0"><b>Date de l'événement </b>: {{ event.event_date }}</li>
+                <li class="list-group-item bg-transparent border-0"><b style="color: red;">Date de limite d'inscription </b>: {{ event.limit_date }}</li>
+            </ul>
+            {% if user.is_authenticated %}
+                {% if user.profile.license.status == "Titulaire" or "Remplaçant" %}
+                    {% if event.limit_date_past %}
+                        <small class="text-muted">Les inscriptions sont closes.</small>
+                    {% else %}
+                        <small class="text-primary">Renseigne ta présence maintenant.</small>
+                    {% endif %}
+                    <br><br>
+                    {% if event.league in user.profile.license.leagues.all %}
+                        <a href="{% url 'event-registration' event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>S'enregistrer</a>
+                    {% else %}
+                        <a href="{% url 'event-registration' event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>Remplacer</a>
+                    {% endif %}
+                    {% if event.claim_period %}
+                        <a href="{% url 'create-claim' event.id %}" class="btn btn-success">Porter réclamation</a>
+                    {% else %}
+                        <a href="{% url 'create-claim' event.id %}" class="btn btn-success disabled" disabled>Porter réclamation</a>
+                    {% endif %}
+                    <br>
+                    {% if user.is_staff %}
+                        <a href="{% url 'race-result' event_id=event.id %}" class="btn btn-primary mt-3">Soumettre les résultats de l'événement</a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container">
+    <h2 class="text-center" style="padding-bottom: 50px;">Line-up</h2>
+    <div class="row">
+        {% for registration in registrations %}
+            {% if event.league in registration.license.leagues.all %}
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card card-event
+                                {% if registration.is_registered == 'Présent' %}
+                                    border-success
+                                {% elif registration.is_registered == 'Absent' %}
+                                    border-danger
+                                {% else %}
+                                    border-dark
+                                {% endif %}">
+                        <div class="card-body">
+                            <div class="media text-left align-items-center">
+                                <img class="rounded-circle account-img mr-2 bg-secondary" src="{{ registration.license.profile.image.url }}" alt="Photo de profil" width="50" height="50">
+                                <div class="media-body">
+                                    <h6 class="mb-1">{{ registration.license }}</h6>
+                                    <small class="text">{{ registration.license.team }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer
+                                    {% if registration.is_registered == 'Présent' %}
+                                        bg-success
+                                    {% elif registration.is_registered == 'Absent' %}
+                                        bg-danger
+                                    {% else %}
+                                        bg-dark
+                                    {% endif %}">
+                            <p class="mb-0 text-center text-white">{{ registration.is_registered }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div> 
+</div>
+
+
+
+<div class="container" style="padding-top: 60px;">
+    <h2 class="text-center" style="padding-bottom: 50px;">Remplaçants</h2>
+    <h4>Pilotes se proposant à remplacer pour cet événement :</h4>
+    <div class="row">
+        {% for registration in registrations %}
+            {% if registration.is_registered == 'Remplaçant' %}
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card card-event border-warning">
+                        <div class="card-body">
+                            <div class="media text-left align-items-center">
+                                <img class="rounded-circle account-img mr-3 bg-secondary" src="{{ registration.license.profile.image.url }}" alt="Photo de profil"  width="50" height="50">
+                                <div class="media-body">
+                                    <h6 class="mb-1">{{ registration.license }}</h6>
+                                    <small class="text">{{ registration.license.team }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-warning">
+                            <p class="mb-0 text-center text-white">{{ registration.is_registered }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}
+

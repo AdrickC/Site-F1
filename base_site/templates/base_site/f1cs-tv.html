@@ -1,0 +1,13 @@
+{% extends "base_site/base.html" %}
+{% block content %}
+
+    <div class="twitch">
+        <div class="twitch-video">
+            <iframe src="https://player.twitch.tv/?channel=f1cstv&parent=127.0.0.1" frameborder="0" allowfullscreen="true" scrolling="no" width="100%" height="100%"></iframe>
+        </div>
+        <div class="twitch-chat">
+            <iframe src="https://www.twitch.tv/embed/f1cstv/chat?parent=127.0.0.1" frameborder="0" scrolling="no" width="100%" height="100%"></iframe>
+        </div>
+    </div>
+    
+{% endblock content %}
