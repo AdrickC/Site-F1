@@ -46,6 +46,7 @@ class License(models.Model):
         ('En attente', 'En attente'),
     )
     status = models.CharField(verbose_name="Statut licence", max_length=50, default='En attente', choices=status_choices)
+    #license_points = models.PositiveIntegerField(verbose_name="Points de licence", default=12)
     total_points = models.PositiveIntegerField(default=0)
 
     def update_total_points(self):

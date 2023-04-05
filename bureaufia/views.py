@@ -75,6 +75,7 @@ def update_claim_response(request, claim_id):
 
     if request.method == 'POST':
         admin_response = request.POST.get('admin_response', '').strip()
+        points_removed = int(request.POST.get('points_removed', 0))
 
         if admin_response:
             claim.admin_response = admin_response
@@ -83,6 +84,10 @@ def update_claim_response(request, claim_id):
             claim.admin_response = admin_response
             claim.is_resolved = False
         claim.save()
+
+        #license = claim.event_registration.license
+        #license.license_points -= points_removed
+        #license.save()
 
         messages.success(request, "Votre saisie a été mise à jour avec succès.")
 
@@ -100,6 +105,9 @@ def claim_list(request):
         'event_registration__event__circuit',
         'event_registration__event__league',
     ).order_by('-event_registration__event__event_date', '-created_at')
+
+    if not request.user.is_staff and not request.user.is_superuser:
+        claims = claims.filter(is_resolved=True)
 
     if league_id:
         claims = claims.filter(event_registration__event__league_id=league_id)

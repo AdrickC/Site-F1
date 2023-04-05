@@ -1,26 +1,34 @@
 {% extends "base_site/base.html" %}
 {% block content %}
 
+
 <div class="container">
     <div class="row justify-content-center align-items-center min-vh-100">
         <div class="col-md-8">
             <div class="card bg-dark text-light">
                 <div class="card-header">
                     <h1 class="text-center mb-0">Détails de la réclamation</h1>
+                    <h3 class="text-muted text-center">
+                        {{ claim.event_registration.event.league.league }} - {{ claim.event_registration.event.circuit.name }} - {{ claim.event_registration.event.event_date|date:"d/m/Y" }}
+                    </h3>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush mb-4">
-                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Incident :</h3> {{ claim.incident_description }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Plaignant :</h3> {{ claim.license.profile.user.username }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Participant réclamé :</h3> {{ claim.event_registration.license.profile.user.username }}</li>
                         <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Type de session :</h3> {{ claim.session_type }}</li>
                         <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Tour de l'incident :</h3> {{ claim.lap_number }}</li>
+                        <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Description de l'incident :</h3> {{ claim.incident_description }}</li>
                         <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>URL de la vidéo :</h3> {{ claim.video_url }}</li>
                         <li class="list-group-item bg-transparent text-light" style="border: 0px"><h3>Timecode de l'incident :</h3> {{ claim.video_timestamp }}</li>
                     </ul>
 
                     <h2 class="mb-2" style="color: #ff7e00;">Décision de la FIA :</h2>
                     {% if claim.is_resolved %}
+                        <span class="badge badge-success">Traitée</span>
                         <p class="mb-0">{{ claim.admin_response }}</p>
                     {% else %}
+                        <span class="badge badge-warning">En cours</span>
                         <p class="mb-0">La réclamation est en cours de traitement.</p>
                     {% endif %}
                     {% if request.user.is_staff or request.user.is_superuser %}

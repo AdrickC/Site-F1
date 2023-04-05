@@ -55,7 +55,7 @@
                     <td>{{ claim.event_registration.license.profile.user.username }}</td>
                     <td>{{ claim.event_registration.event.circuit.name }}</td>
                     <td>{{ claim.event_registration.event.event_date|date:"d/m/Y" }}</td>
-                    <td>{{ claim.created_at|date:"d/m/Y" }}</td>
+                    <td>{{ claim.created_at|date:"d/m/Y H:i:s" }}</td>
                     <td>
                         {% if claim.is_resolved %}
                             <span class="badge badge-success">Traitée</span>

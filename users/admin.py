@@ -9,7 +9,7 @@ class ProfilAdmin(admin.ModelAdmin):
 
 @admin.register(License)
 class LicenseAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'team', 'status',)
+    list_display = ('profile', 'team', 'status')
     ordering = ('profile',)
 
 
