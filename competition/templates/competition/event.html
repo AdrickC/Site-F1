@@ -45,8 +45,10 @@
                     {% endif %}
                     <br>
                     {% if user.is_staff %}
-                        <a href="{% url 'race-result' event_id=event.id %}" class="btn btn-primary mt-3">Soumettre les résultats de l'événement</a>
+                        <a href="{% url 'submit-event-result' event_id=event.id %}" class="btn btn-primary mt-3">Soumettre les résultats de l'événement</a>
                     {% endif %}
+                    <br>
+                    <a href="{% url 'event-results' event_id=event.id %}" class="btn btn-custom mt-3">Résultats de l'événement</a>
                 {% endif %}
             {% endif %}
         </div>

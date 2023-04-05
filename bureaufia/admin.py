@@ -11,5 +11,5 @@ class ClaimAdmin(admin.ModelAdmin):
 
 @admin.register(EventResult)
 class EventResultAdmin(admin.ModelAdmin):
-    list_display = ('event', 'license', 'position', 'points')
+    list_display = ('event', 'license', 'position', 'best_lap', 'points')
     ordering = ('event', 'position')

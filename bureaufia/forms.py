@@ -27,7 +27,7 @@ class ClaimForm(forms.ModelForm):
 class EventResultForm(forms.ModelForm):
     class Meta:
         model = EventResult
-        fields = ('license', 'position')
+        fields = ('license', 'position', 'best_lap')
 
     def __init__(self, *args, **kwargs):
         event = kwargs.pop('event', None)

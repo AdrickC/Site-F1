@@ -180,6 +180,20 @@ def calendar(request):
 
 
 
+def event_results(request, event_id):
+    event = Event.objects.get(id=event_id)
+    event_results = EventResult.objects.filter(event=event)
+
+    context = {
+        'event': event,
+        'event_results': event_results,
+    }
+
+    return render(request, 'competition/event-results.html', context)
+
+
+
+
 
 
 

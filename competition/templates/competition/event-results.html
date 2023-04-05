@@ -1,0 +1,35 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-5">
+        Résultats de la course pour l'événement {{ event.name }}<br>
+        <small class="text-muted">
+            {{ event.event_date|date:"d F Y" }} - {{ event.circuit }} - {{ event.league }}
+        </small>
+    </h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Pilote</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Meilleur tour en course</th>
+                    <th scope="col">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in event_results %}
+                <tr>
+                    <td>{{ result.license }}</td>
+                    <td>{{ result.position }}</td>
+                    <td>{{ result.best_lap|yesno:"Oui,Non" }}</td>
+                    <td>{{ result.points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

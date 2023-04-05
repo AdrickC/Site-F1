@@ -33,6 +33,7 @@ class EventResult(models.Model):
     season = models.ForeignKey('competition.Season', verbose_name="Saison", on_delete=models.CASCADE)
     license = models.ForeignKey('users.License', verbose_name="Licence", on_delete=models.CASCADE)
     position = models.PositiveIntegerField(verbose_name="Position")
+    best_lap = models.BooleanField(verbose_name="Meilleur tour en course", default=False)
     points = models.PositiveIntegerField(verbose_name="Points")
 
     class Meta:

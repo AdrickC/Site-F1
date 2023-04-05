@@ -6,7 +6,7 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-5">
-        Résultats de la course pour l'événement {{ event.name }}<br>
+        Soumettre les résultats de la course pour l'événement {{ event.name }}<br>
         <small class="text-muted">
             {{ event.event_date|date:"d F Y" }} - {{ event.circuit }} - {{ event.league }}
         </small>
@@ -19,6 +19,7 @@
                     <tr>
                         <th scope="col">Pilote</th>
                         <th scope="col">Position</th>
+                        <th scope="col">Meilleur tour en course</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@
                     <tr>
                         <td>{{ form.license }}</td>
                         <td>{{ form.position }}</td>
+                        <td>{{ form.best_lap }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

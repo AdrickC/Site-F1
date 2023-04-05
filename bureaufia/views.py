@@ -169,6 +169,9 @@ def submit_event_results(request, event_id):
                     instance.event = event
                     instance.season = event.season
                     instance.points = calculate_points(instance.position) # A function to calculate points based on position
+                    instance.best_lap = form.cleaned_data['best_lap']
+                    if instance.best_lap:
+                        instance.points += 1
 
                     # Check if an EventResult with the same event_id and license_id already exists
                     existing_result = EventResult.objects.filter(event=instance.event, license=instance.license).first()
@@ -176,6 +179,7 @@ def submit_event_results(request, event_id):
                     if existing_result:
                         existing_result.position = instance.position
                         existing_result.points = instance.points
+                        existing_result.best_lap = instance.best_lap
                         existing_result.save()
                     else:
                         instance.save()
@@ -190,7 +194,7 @@ def submit_event_results(request, event_id):
             initial_data = [{'license': license} for license in registered_licenses]
             formset = EventResultFormSet(initial=initial_data, prefix='eventresult')
         else:
-            initial_data = [{'license': result.license, 'position': result.position} for result in event_results]
+            initial_data = [{'license': result.license, 'position': result.position, 'best_lap': result.best_lap} for result in event_results]
             formset = EventResultFormSet(initial=initial_data, prefix='eventresult')
 
     context = {
@@ -198,6 +202,6 @@ def submit_event_results(request, event_id):
         'event': event,
     }
 
-    return render(request, 'bureaufia/race-result.html', context)
+    return render(request, 'bureaufia/submit-event-result.html', context)
 
 
