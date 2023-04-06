@@ -13,8 +13,8 @@ from users.models import License
 
 class Season(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nom saison')
+    game = models.ForeignKey(Game, verbose_name='Nom du jeu', null=True, on_delete=models.SET_NULL)
     start_date = models.DateField(verbose_name='Date début')
-    end_date = models.DateField(verbose_name='Date fin')
 
     def __str__(self):
         return self.name

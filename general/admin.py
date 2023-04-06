@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Circuit, Team, League, Platform, Game
+from .models import Circuit, Team, League, Game
 
 
 @admin.register(Circuit)
@@ -16,11 +16,6 @@ class TeamAdmin(admin.ModelAdmin):
 class LeagueAdmin(admin.ModelAdmin):
     list_display = ('league', 'game', 'hexcolor')
     ordering = ('league', 'hexcolor')
-
-@admin.register(Platform)
-class PlatformAdmin(admin.ModelAdmin):
-    list_display = ('platform',)
-    ordering = ('platform',)
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):

@@ -25,19 +25,6 @@ class Circuit(models.Model):
         return self.name
 
 
-# Plateformes
-
-class Platform(models.Model):
-    platform = models.CharField('Plateforme', max_length=100)
-    logo = models.ImageField('Logo', blank=True, upload_to='platform_logos')
-
-    def __str__(self):
-        return self.platform
-
-    class Meta:
-        verbose_name = 'Plateforme'
-        verbose_name_plural = 'Plateformes'
-
 
 # Jeux
 

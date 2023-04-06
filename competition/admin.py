@@ -31,6 +31,6 @@ class EventRegistrationAdmin(admin.ModelAdmin):
 
 @admin.register(Season)
 class SeasonAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date', 'end_date')
+    list_display = ('name', 'game', 'start_date')
     ordering = ('-start_date',)
     
