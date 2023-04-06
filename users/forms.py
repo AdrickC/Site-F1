@@ -51,11 +51,12 @@ class ChampionshipApplicationForm(forms.ModelForm):
         labels = {
             'first_name': 'Prénom',
             'platform': 'Sur quelle plateforme jouez-vous à F1 ?',
-            'platform_id': 'Identifiant plateforme',
+            'platform_id': 'SteamID, OriginID, ... (en fonction de votre réponse précédente)',
             'availability': 'Disponibilités',
             'teammates': 'Coéquipiers souhaités',
             'preferred_team1': 'Ecurie 1 souhaitée',
             'preferred_team2': 'Ecurie 2 souhaitée',
             'preferred_team3': 'Ecurie 3 souhaitée',
         }  
+
 
