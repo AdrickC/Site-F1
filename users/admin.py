@@ -9,8 +9,12 @@ class ProfilAdmin(admin.ModelAdmin):
 
 @admin.register(License)
 class LicenseAdmin(admin.ModelAdmin):
-    list_display = ('profile', 'team', 'status')
+    list_display = ('profile', 'leagues_list', 'team', 'status',)
     ordering = ('profile',)
+
+    def leagues_list(self, obj):
+        return ", ".join([str(league) for league in obj.leagues.all()])
+    leagues_list.short_description = 'Ligues'
 
 
 @admin.register(ChampionshipApplication)

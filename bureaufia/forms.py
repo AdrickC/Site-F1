@@ -1,6 +1,6 @@
 from django import forms
-from .models import ClaimRegistration, EventResult
-from competition.models import EventRegistration
+from .models import ClaimRegistration
+from competition.models import EventRegistration, EventResult
 from django.core.exceptions import ValidationError
 from django.forms import BaseFormSet
 from users.models import License
@@ -30,8 +30,10 @@ class EventResultForm(forms.ModelForm):
         fields = ('license', 'position', 'best_lap')
 
     def __init__(self, *args, **kwargs):
-        event = kwargs.pop('event', None)
+        self.event = kwargs.pop('event', None)
         super(EventResultForm, self).__init__(*args, **kwargs)
-        if event:
-            self.fields['license'].queryset = License.objects.filter(eventregistration__event=event)
+        if self.event:
+            self.fields['license'].queryset = License.objects.filter(eventregistration__event=self.event)
+
+
     

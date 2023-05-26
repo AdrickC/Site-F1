@@ -2,52 +2,60 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
 {% block content %}
-<div class="container">
+<div class="container mt-5">
     <h1 class="text-center my-4">Classements Pilotes</h1>
 
     <form method="get" class="mb-3">
         <label for="season" class="form-label">Saison :</label>
-            <select name="season" id="season" class="form-select" onchange="this.form.submit()">
-                {% for season in seasons %}
-                    <option value="{{ season.id }}" {% if selected_season.id == season.id %}selected{% endif %}>{{ season.name }}</option>
-                {% endfor %}
-            </select>
+        <select name="season" id="season" class="form-select" onchange="this.form.submit()">
+            {% for season in seasons %}
+                <option value="{{ season.id }}" {% if selected_season.id == season.id %}selected{% endif %}>{{ season.name }}</option>
+            {% endfor %}
+        </select>
     </form>
 
     {% for game, standings_by_league in standings_by_game.items %}
-    <!--<h3 class="text-center my-4">{{ game }}</h3>-->
-    {% for league, standings in standings_by_league.items %}
-    <div class="card mb-4">
-        <div class="card-header" style="background-color: {{ league.hexcolor }};">
-            <h3 class="text-white">{{ league }}</h3>
+        <ul class="nav nav-pills mb-3 justify-content-center" id="leagueTabs" role="tablist">
+            {% for league, standings in standings_by_league.items %}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link rounded shadow {% if forloop.first %}active{% endif %} text-light" id="league{{ league.id }}-tab" data-toggle="tab" href="#league{{ league.id }}" role="tab" style="background-color: {{ league.hexcolor }};">
+                    <h3 class="mb-0">{{ league }}</h3>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content" id="leagueTabsContent">
+            {% for league, standings in standings_by_league.items %}
+            <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="league{{ league.id }}" role="tabpanel">
+                <div class="card mb-4">
+                    <div class="card-body table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-dark">#</th>
+                                    <th scope="col" class="text-dark">Pilote</th>
+                                    <th scope="col" class="text-dark">Écurie</th>
+                                    <th scope="col" class="text-dark">Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for standing in standings %}
+                                    <tr>
+                                        <td class="text-dark">{{ forloop.counter }}</td>
+                                        <td class="text-dark">{{ standing.profile }}</td>
+                                        <td class="text-dark">{{ standing.team }}</td>
+                                        <td class="text-dark">{{ standing.league_total_points }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="card-body table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-dark">#</th>
-                        <th scope="col" class="text-dark">Pilote</th>
-                        <th scope="col" class="text-dark">Écurie</th>
-                        <th scope="col" class="text-dark">Points</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for standing in standings %}
-                        <tr>
-                            <td class="text-dark">{{ forloop.counter }}</td>
-                            <td class="text-dark">{{ standing.profile }}</td>
-                            <td class="text-dark">{{ standing.team }}</td>
-                            <td class="text-dark">{{ standing.league_total_points }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% endfor %}
     {% endfor %}
 </div>
 {% endblock content %}
-

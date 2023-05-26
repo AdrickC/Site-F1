@@ -1,5 +1,5 @@
 from django.contrib import admin
-from bureaufia.models import ClaimRegistration, EventResult
+from bureaufia.models import ClaimRegistration
 
 # Register your models here.
 
@@ -8,8 +8,3 @@ from bureaufia.models import ClaimRegistration, EventResult
 class ClaimAdmin(admin.ModelAdmin):
     list_display = ('license', 'event_registration', 'session_type', 'lap_number', 'created_at')
 
-
-@admin.register(EventResult)
-class EventResultAdmin(admin.ModelAdmin):
-    list_display = ('event', 'license', 'position', 'best_lap', 'points')
-    ordering = ('event', 'position')

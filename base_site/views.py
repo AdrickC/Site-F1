@@ -8,11 +8,8 @@ def base(request):
     return render(request, 'base_site/base.html')
 
 
-
 def home(request):
-    games = Game.objects.all()
-    return render(request, 'base_site/home.html', context={'title': 'Accueil', 'games': games})
-
+    return render(request, 'base_site/home.html')
 
 
 def f1cstv(request):

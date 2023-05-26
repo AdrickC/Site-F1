@@ -22,6 +22,14 @@
                 <li class="list-group-item bg-transparent border-0"><b>Type d'événement </b>: Championnat</li>
                 <li class="list-group-item bg-transparent border-0"><b>Ligue </b>: {{ event.league }}</li>
                 <li class="list-group-item bg-transparent border-0"><b>Circuit </b>: {{ event.circuit }}</li>
+                <li class="list-group-item bg-transparent border-0">
+                    <b>Format épreuve :</b>
+                    {% for format in event.weekend_format.all %}
+                        {{ format }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Aucun format défini
+                    {% endfor %}
+                </li>
                 <li class="list-group-item bg-transparent border-0"><b>Date de l'événement </b>: {{ event.event_date }}</li>
                 <li class="list-group-item bg-transparent border-0"><b style="color: red;">Date de limite d'inscription </b>: {{ event.limit_date }}</li>
             </ul>
@@ -34,9 +42,9 @@
                     {% endif %}
                     <br><br>
                     {% if event.league in user.profile.license.leagues.all %}
-                        <a href="{% url 'event-registration' event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>S'enregistrer</a>
+                        <a href="{% url 'event-registration' event.game.slug event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>S'enregistrer</a>
                     {% else %}
-                        <a href="{% url 'event-registration' event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>Remplacer</a>
+                        <a href="{% url 'event-registration' event.game.slug event.pk %}" class="btn {% if event.limit_date_past %}btn-secondary disabled{% else %}btn-custom{% endif %}" {% if event.limit_date_past %}disabled{% endif %}>Remplacer</a>
                     {% endif %}
                     {% if event.claim_period %}
                         <a href="{% url 'create-claim' event.id %}" class="btn btn-success">Porter réclamation</a>
@@ -45,10 +53,14 @@
                     {% endif %}
                     <br>
                     {% if user.is_staff %}
-                        <a href="{% url 'submit-event-result' event_id=event.id %}" class="btn btn-primary mt-3">Soumettre les résultats de l'événement</a>
+                        {% if event.is_event_over %}
+                            <a href="{% url 'submit-event-result' event.game.slug event.id %}" class="btn btn-primary mt-3">Soumettre les résultats de l'événement</a>
+                        {% else %}
+                            <a href="#" class="btn btn-primary mt-3 disabled" disabled>Soumettre les résultats de l'événement</a>
+                        {% endif %}
                     {% endif %}
                     <br>
-                    <a href="{% url 'event-results' event_id=event.id %}" class="btn btn-custom mt-3">Résultats de l'événement</a>
+                    <a href="{% url 'event-results' event.game.slug event.id %}" class="btn btn-custom mt-3">Résultats de l'événement</a>
                 {% endif %}
             {% endif %}
         </div>
@@ -65,30 +77,32 @@
             {% if event.league in registration.license.leagues.all %}
                 <div class="col-md-4 col-lg-3 mb-4">
                     <div class="card card-event
-                                {% if registration.is_registered == 'Présent' %}
-                                    border-success
-                                {% elif registration.is_registered == 'Absent' %}
-                                    border-danger
-                                {% else %}
-                                    border-dark
-                                {% endif %}">
+                        {% if registration.is_registered == 'Présent' %}
+                            border-success
+                        {% elif registration.is_registered == 'Absent' %}
+                            border-danger
+                        {% else %}
+                            border-dark
+                        {% endif %}">
                         <div class="card-body">
                             <div class="media text-left align-items-center">
                                 <img class="rounded-circle account-img mr-2 bg-secondary" src="{{ registration.license.profile.image.url }}" alt="Photo de profil" width="50" height="50">
                                 <div class="media-body">
                                     <h6 class="mb-1">{{ registration.license }}</h6>
-                                    <small class="text">{{ registration.license.team }}</small>
+                                    {% if registration.team %}
+                                        <small class="text">{{ registration.team }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer
-                                    {% if registration.is_registered == 'Présent' %}
-                                        bg-success
-                                    {% elif registration.is_registered == 'Absent' %}
-                                        bg-danger
-                                    {% else %}
-                                        bg-dark
-                                    {% endif %}">
+                            {% if registration.is_registered == 'Présent' %}
+                                bg-success
+                            {% elif registration.is_registered == 'Absent' %}
+                                bg-danger
+                            {% else %}
+                                bg-dark
+                            {% endif %}">
                             <p class="mb-0 text-center text-white">{{ registration.is_registered }}</p>
                         </div>
                     </div>
@@ -98,8 +112,6 @@
     </div> 
 </div>
 
-
-
 <div class="container" style="padding-top: 60px;">
     <h2 class="text-center" style="padding-bottom: 50px;">Remplaçants</h2>
     <h4>Pilotes se proposant à remplacer pour cet événement :</h4>
@@ -107,17 +119,29 @@
         {% for registration in registrations %}
             {% if registration.is_registered == 'Remplaçant' %}
                 <div class="col-md-4 col-lg-3 mb-4">
-                    <div class="card card-event border-warning">
+                    <div class="card card-event
+                        {% if registration.team %}
+                            border-success
+                        {% else %}
+                            border-warning
+                        {% endif %}">
                         <div class="card-body">
                             <div class="media text-left align-items-center">
                                 <img class="rounded-circle account-img mr-3 bg-secondary" src="{{ registration.license.profile.image.url }}" alt="Photo de profil"  width="50" height="50">
                                 <div class="media-body">
                                     <h6 class="mb-1">{{ registration.license }}</h6>
-                                    <small class="text">{{ registration.license.team }}</small>
+                                    {% if registration.team %}
+                                        <small class="text">{{ registration.team }}</small>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer bg-warning">
+                        <div class="card-footer
+                            {% if registration.team %}
+                                bg-success
+                            {% else %}
+                                bg-warning
+                            {% endif %}">
                             <p class="mb-0 text-center text-white">{{ registration.is_registered }}</p>
                         </div>
                     </div>
@@ -126,7 +150,5 @@
         {% endfor %}
     </div>
 </div>
-
-
 {% endblock content %}
 

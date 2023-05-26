@@ -55,9 +55,16 @@
                                 Championnat
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkChampionnat">
-                                <a class="dropdown-item" href="{% url 'calendar' %}">Calendrier</a>
-                                <a class="dropdown-item" href="{% url 'driver-standings' %}">Classement pilotes</a>
-                                <a class="dropdown-item" href="{% url 'constructor-standings' %}">Classement constructeurs</a>
+                                {% for game in games %}
+                                <div class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">{{ game.name }}</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{% url 'game-calendar' game.slug %}">Calendrier</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'driver-standings' game.slug %}">Classement pilotes</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'constructor-standings' game.slug %}">Classement constructeurs</a></li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
                             </div>
                         </li>
                         <li class="nav-item dropdown">

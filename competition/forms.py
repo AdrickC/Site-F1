@@ -1,5 +1,6 @@
 from django import forms
-from .models import EventRegistration
+from .models import EventRegistration, EventResult
+from users.models import License
 
 
 
@@ -45,8 +46,13 @@ class CancelReplacementForm(forms.Form):
         required=False,
     )
 
+class EventResultForm(forms.ModelForm):
+    class Meta:
+        model = EventResult
+        fields = ('license', 'position', 'best_lap')
 
-# forms.py
-
-
-
+    def __init__(self, *args, **kwargs):
+        self.event = kwargs.pop('event', None)
+        super(EventResultForm, self).__init__(*args, **kwargs)
+        if self.event:
+            self.fields['license'].queryset = License.objects.filter(eventregistration__event=self.event)

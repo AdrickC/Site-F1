@@ -7,5 +7,4 @@ urlpatterns = [
     path('reclamation/liste/', views.claim_list, name='claim-list'),
     path('reclamation/detail/<int:claim_id>/', views.claim_detail, name='claim-detail'),
     path('reclamation/detail/<int:claim_id>/decision/', views.update_claim_response, name='update-claim-response'),
-    path('resultats/<int:event_id>/', views.submit_event_results, name='submit-event-result'),
 ]

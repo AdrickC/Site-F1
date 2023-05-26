@@ -1,0 +1,61 @@
+{% extends "base_site/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">
+        Soumettre les résultats de la course pour l'événement {{ event.name }}<br>
+        <small class="text-muted">
+            {{ event.event_date|date:"d F Y" }} - {{ event.circuit }} - {{ event.league }}
+        </small>
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <ul class="nav nav-pills mb-3 justify-content-center" id="phaseTabs" role="tablist">
+            {% for phase, formset in formsets %}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {% if forloop.first %}active{% endif %}" id="phase{{ phase.id }}-tab" data-toggle="tab" href="#phase{{ phase.id }}" role="tab">
+                    {{ phase.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="tab-content" id="phaseTabsContent">
+            {% for phase, formset in formsets %}
+            <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="phase{{ phase.id }}" role="tabpanel">
+                <h2 class="mb-3">{{ phase.name }}</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Pilote</th>
+                                <th scope="col">Position</th>
+                                <th scope="col">Meilleur tour en course</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for form in formset %}
+                            <tr>
+                                <td>{{ form.license }}</td>
+                                <td>{{ form.position }}</td>
+                                <td>{{ form.best_lap }}</td>
+                                {{ form.id }}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {{ formset.management_form }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-custom">Enregistrer les résultats</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

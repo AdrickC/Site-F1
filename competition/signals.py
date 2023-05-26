@@ -12,10 +12,8 @@ def create_event_registrations(sender, instance, created, **kwargs):
         # Filtrer les licences en fonction de la ligue de l'événement
         licenses = License.objects.filter(leagues=instance.league)
 
-        registrations = [EventRegistration(license=license, event=instance) for license in licenses]
+        registrations = [EventRegistration(license=license, team=license.team, event=instance) for license in licenses]
 
         with transaction.atomic():
             EventRegistration.objects.bulk_create(registrations)
-
-
 

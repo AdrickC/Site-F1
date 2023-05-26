@@ -4,7 +4,7 @@
 
 
 {% block content %}
-    <div class="container">
+    <div class="container mt-5">
         <h1 class="text-center my-4">Classement Constructeurs</h1>
         <form method="get" class="mb-3">
             <label for="season" class="form-label">Saison :</label>
@@ -28,8 +28,8 @@
                         {% for standing in standings %}
                             <tr>
                                 <td class="text-dark">{{ forloop.counter }}</td>
-                                <td class="text-dark">{{ standing.0 }}</td>
-                                <td class="text-dark">{{ standing.1 }}</td>
+                                <td class="text-dark">{{ standing.team }}</td>
+                                <td class="text-dark">{{ standing.total_points }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

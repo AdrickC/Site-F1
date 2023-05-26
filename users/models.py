@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from general.models import League, Team
 from PIL import Image
 from django.db.models import Sum
-from bureaufia.models import EventResult
 
 
 
@@ -46,12 +45,6 @@ class License(models.Model):
         ('En attente', 'En attente'),
     )
     status = models.CharField(verbose_name="Statut licence", max_length=50, default='En attente', choices=status_choices)
-    #license_points = models.PositiveIntegerField(verbose_name="Points de licence", default=12)
-    total_points = models.PositiveIntegerField(default=0)
-
-    def update_total_points(self):
-        self.total_points = EventResult.objects.filter(license=self).aggregate(total_points=Sum('points'))['total_points'] or 0
-        self.save()
 
     def __str__(self):
         return f'{self.profile}'

@@ -1,6 +1,7 @@
 from django.db import models
 from pays import Countries
 from PIL import Image
+from django.utils.text import slugify
 
 
 # Circuits
@@ -10,10 +11,6 @@ for country in Countries():
     country_choices.append((str(country),str(country)))
 country_choices = sorted(country_choices)
 
-circuit_version_choices = (
-    ('Grand-Prix', 'Grand-Prix'),
-    ('Endurance', 'Endurance')
-)
 
 class Circuit(models.Model):
     name = models.CharField('Circuit', max_length=120)
@@ -31,17 +28,17 @@ class Circuit(models.Model):
 class Game(models.Model):
     name = models.CharField('Nom du jeu', max_length=100)
     logo = models.ImageField('Logo', blank=True, upload_to='game_logos')
+    slug = models.SlugField(unique=True)
 
-    #def incoming_events(self):
-        #return self.event_set.filter(event_date__gte = datetime.today()).order_by('event_date')
-
-    #def passed_events(self):
-        #return self.event_set.filter(event_date__lt = datetime.today()).order_by('-event_date')[:3]
-
+    def save(self, *args, **kwargs):
+        if not self.id:
+            super(Game, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(f"{self.name}-{self.id}")
+        super(Game, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
-
 
     class Meta:
         verbose_name = 'Jeu'
@@ -87,3 +84,5 @@ class League(models.Model):
     class Meta:
         verbose_name = 'Ligue'
         verbose_name_plural = 'Ligues'
+
+

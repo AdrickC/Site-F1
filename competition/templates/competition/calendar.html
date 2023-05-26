@@ -5,8 +5,7 @@
 {% block content %}
 <div class="container mt-5">
     <section class="py-5">
-        <h1 class="text-center mb-5">Championnat</h1>
-
+        <h1 class="text-center mb-5">Championnats</h1>
         <form method="get" class="mb-3">
             <div class="form-row">
                 <div class="col-md-4">
@@ -46,15 +45,19 @@
                     {% for event in game_events %}
                         <div class="col-lg-4 mb-4">
                             <div class="card card-home shadow-sm custom-card" style="border: 3px solid white">
-                                <a href="{% url 'event' event.pk %}"><img src="{{ event.circuit.image.url }}" class="card-img-top" alt="img-circuit" style="background-color: white"></a>
+                                <a href="{% url 'event' game.slug event.pk %}"><img src="{{ event.circuit.image.url }}" class="card-img-top" alt="img-circuit" style="background-color: white"></a>
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="{% url 'event' event.pk %}" class="circuit-name">{{ event.circuit }}</a></h5>
+                                    <h5 class="card-title"><a href="{% url 'event' game.slug event.pk %}" class="circuit-name">{{ event.circuit }}</a></h5>
                                     <h6 class="card-subtitle mb-3 text-muted"><b>{{ event.event_date | date:"l" | title }} {{ event.event_date | date }}</b></h6>
                                     <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                 </div>
-                                <div class="card-footer" style="background-color: {{event.league.hexcolor}}">
+                                <div class="card-footer" style="background: {{ event.league.hexcolor|default:'black' }};">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="font-weight-bold">{{ event.league }}</span>
+                                        {% if event.league %}
+                                            <span class="font-weight-bold">{{ event.league }}</span>
+                                        {% else %}
+                                            <span class="font-weight-bold">Événement</span>
+                                        {% endif %}
                                         {% if event.days_before_event > 0 %}
                                             <span>{{ event.days_before_event }} jours avant l'événement</span>
                                         {% elif event.is_event_in_progress %}

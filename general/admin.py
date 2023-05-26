@@ -12,12 +12,12 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ('team', 'game', 'logo')
     ordering = ('team',)
 
-@admin.register(League)
-class LeagueAdmin(admin.ModelAdmin):
-    list_display = ('league', 'game', 'hexcolor')
-    ordering = ('league', 'hexcolor')
-
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = ('name',)
     ordering = ('name',)
+
+@admin.register(League)
+class LeagueAdmin(admin.ModelAdmin):
+    list_display = ('league', 'game', 'hexcolor')
+    ordering = ('league', 'hexcolor')
